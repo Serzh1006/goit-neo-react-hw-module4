@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { FadeLoader } from "react-spinners";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 import ReactModal from "react-modal";
 import SearchBar from "./SearchBar/SearchBar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageModal from "./ImageModal/ImageModal";
+import ErrorMessage from "./ErrorMessage/ErrorMessage";
 import { getImages } from "../api/api";
+import css from "./app.module.css";
 
 ReactModal.setAppElement("#root");
 const customStyles = {
@@ -47,10 +52,21 @@ const App = () => {
         setError(false);
         setGallery([]);
         const response = await getImages(value);
+        if (response.length === 0) {
+          iziToast.info({
+            title: "Not found!",
+            message: "Please try again.",
+            position: "bottomCenter",
+          });
+        }
         setGallery(response);
-      } catch (error) {
+      } catch (err) {
         setError(true);
-        console.error(error.message);
+        iziToast.error({
+          title: "Error",
+          message: `Status: ${err.status}`,
+          position: "bottomCenter",
+        });
       } finally {
         setIsLoading(false);
       }
@@ -67,6 +83,13 @@ const App = () => {
         isOpenModal={toggleModal}
         style={customStyles}
       />
+      <FadeLoader
+        className={css.loader}
+        width={4}
+        loading={isLoading}
+        color="#43047a"
+      />
+      {error && <ErrorMessage />}
       <ReactModal
         isOpen={isOpen}
         style={customStyles}
@@ -74,7 +97,6 @@ const App = () => {
       >
         <ImageModal imageData={dataModal} isOpen={toggleModal} />
       </ReactModal>
-      {isLoading && <span>Loading...</span>}
     </>
   );
 };

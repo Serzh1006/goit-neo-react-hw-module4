@@ -10,6 +10,7 @@ export const getImages = async (value, page) => {
       page,
       query: value,
       orientation: "landscape",
+      per_page: 12,
     },
   });
   return data.results;

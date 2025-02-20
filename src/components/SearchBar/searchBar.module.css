@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  background-color: rgb(21, 21, 152);
+}
+
+.inputValue {
+  width: 300px;
+  height: 30px;
+  font-size: 15px;
+  padding-left: 8px;
+  color: gray;
+}
+
+.btnSubmit {
+  margin-left: 5px;
+  border: none;
+  font-size: 22px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: white;
+}
