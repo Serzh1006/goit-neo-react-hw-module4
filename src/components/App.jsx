@@ -8,6 +8,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageModal from "./ImageModal/ImageModal";
 import ErrorMessage from "./ErrorMessage/ErrorMessage";
+import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import { getImages } from "../api/api";
 import css from "./app.module.css";
 
@@ -22,12 +23,15 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    backgroundColor: "#92085d",
+    color: "white",
   },
 };
 
 const App = () => {
   const [value, setValue] = useState("");
-  // const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [gallery, setGallery] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -36,6 +40,12 @@ const App = () => {
 
   const searchByValue = (text) => {
     setValue(text);
+    setPage(1);
+    setGallery([]);
+  };
+
+  const loadMoreContant = () => {
+    setPage((prevPage) => prevPage + 1);
   };
 
   const toggleModal = () => {
@@ -50,8 +60,7 @@ const App = () => {
       try {
         setIsLoading(true);
         setError(false);
-        setGallery([]);
-        const response = await getImages(value);
+        const response = await getImages(value, page);
         if (response.length === 0) {
           iziToast.info({
             title: "Not found!",
@@ -59,7 +68,8 @@ const App = () => {
             position: "bottomCenter",
           });
         }
-        setGallery(response);
+        setGallery((prevState) => [...prevState, ...response.results]);
+        setTotalPages(response.total_pages);
       } catch (err) {
         setError(true);
         iziToast.error({
@@ -72,7 +82,7 @@ const App = () => {
       }
     };
     searchAPI();
-  }, [value]);
+  }, [value, page]);
 
   return (
     <>
@@ -89,6 +99,7 @@ const App = () => {
         loading={isLoading}
         color="#43047a"
       />
+      {page < totalPages && <LoadMoreBtn handleClick={loadMoreContant} />}
       {error && <ErrorMessage />}
       <ReactModal
         isOpen={isOpen}

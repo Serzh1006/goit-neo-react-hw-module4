@@ -1,0 +1,19 @@
+.loadMoreBtn {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  display: block;
+  padding: 7px 15px;
+  margin: 0 auto;
+  margin-top: 30px;
+  text-decoration: underline;
+  border: none;
+  font-size: 18px;
+  background-color: transparent;
+  color: teal;
+  transition: color 250ms ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: tomato;
+  }
+}

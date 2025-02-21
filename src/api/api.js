@@ -13,5 +13,5 @@ export const getImages = async (value, page) => {
       per_page: 12,
     },
   });
-  return data.results;
+  return data;
 };
