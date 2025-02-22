@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { FadeLoader } from "react-spinners";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
-import ReactModal from "react-modal";
 import SearchBar from "./SearchBar/SearchBar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageModal from "./ImageModal/ImageModal";
@@ -12,7 +11,6 @@ import LoadMoreBtn from "./LoadMoreBtn/LoadMoreBtn";
 import { getImages } from "../api/api";
 import css from "./app.module.css";
 
-ReactModal.setAppElement("#root");
 const customStyles = {
   content: {
     padding: 0,
@@ -101,13 +99,14 @@ const App = () => {
       />
       {page < totalPages && <LoadMoreBtn handleClick={loadMoreContant} />}
       {error && <ErrorMessage />}
-      <ReactModal
-        isOpen={isOpen}
-        style={customStyles}
-        onRequestClose={toggleModal}
-      >
-        <ImageModal imageData={dataModal} isOpen={toggleModal} />
-      </ReactModal>
+      {isOpen && (
+        <ImageModal
+          imageData={dataModal}
+          isOpen={toggleModal}
+          openModal={isOpen}
+          stylesObj={customStyles}
+        />
+      )}
     </>
   );
 };
