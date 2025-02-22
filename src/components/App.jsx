@@ -99,14 +99,12 @@ const App = () => {
       />
       {page < totalPages && <LoadMoreBtn handleClick={loadMoreContant} />}
       {error && <ErrorMessage />}
-      {isOpen && (
-        <ImageModal
-          imageData={dataModal}
-          isOpen={toggleModal}
-          openModal={isOpen}
-          stylesObj={customStyles}
-        />
-      )}
+      <ImageModal
+        imageData={dataModal}
+        isOpen={toggleModal}
+        openModal={isOpen}
+        stylesObj={customStyles}
+      />
     </>
   );
 };
