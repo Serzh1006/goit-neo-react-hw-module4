@@ -1,10 +1,24 @@
+import { useEffect, useRef } from "react";
 import ImageCard from "../ImageCard/ImageCard";
 import css from "./imageGallery.module.css";
 
 const ImageGallery = ({ list, modalData, isOpenModal }) => {
+  const galleryRef = useRef(null);
+
+  useEffect(() => {
+    if (list.length <= 12) return;
+    if (galleryRef.current && list.length > 0) {
+      const heightCard = galleryRef.current.firstChild?.offsetHeight || 0;
+      window.scrollBy({
+        top: heightCard * 2,
+        behavior: "smooth",
+      });
+    }
+  }, [list]);
+
   return (
     <main>
-      <ul className={css.galleryList}>
+      <ul ref={galleryRef} className={css.galleryList}>
         {list.map((card) => {
           return (
             <li
